@@ -3,6 +3,8 @@
 
 #include <stdbool.h>
 
+const int DATASIZE = 4 * sizeof(short);
+
 typedef struct Node Node;
 
 typedef struct LinkedList LinkedList;
