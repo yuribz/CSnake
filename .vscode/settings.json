@@ -3,6 +3,7 @@
     "files.associations": {
         "stdio.h": "c",
         "stdlib.h": "c",
-        "linkedlist.h": "c"
+        "linkedlist.h": "c",
+        "sdl.h": "c"
     }
 }
