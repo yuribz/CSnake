@@ -9,18 +9,24 @@ typedef struct Queue {
     int         size;
 } Queue;
 
-bool enqueue(Queue queue, short val1, short val2, short val3, short val4) {
-    return true;
+Queue* createQueue() {
+    Queue* queue = (Queue*) malloc(sizeof(Queue));
+    queue->queue = createList();
 }
 
-bool dequeue(Queue queue, short* data) {
-    return true;
+bool enqueue(Queue* queue, short val1, short val2, short val3, short val4) {
+    return append(queue->queue, val1, val2, val3, val4);
+}
+
+bool dequeue(Queue* queue, short* data) {
+    get(queue->queue, 0, data);
+    return delete(queue->queue, 0);
 };
 
-bool peekFirst(Queue queue, short* data) {
-    return true;
+bool peekFirst(Queue* queue, short* data) {
+    return get(queue->queue, 0, data);
 };
 
-bool peekLast(Queue queue, short* data) {
-    return true;
+bool peekLast(Queue* queue, short* data) {
+    return get(queue->queue, -1, data);
 };
