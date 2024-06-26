@@ -1,5 +1,8 @@
 #include <SDL2/SDL.h>
+
 #include <stdio.h>
+#include <stdbool.h>
+#include "queue.h"
 
 #define SCREEN_WIDTH 480
 #define SCREEN_HEIGHT 360

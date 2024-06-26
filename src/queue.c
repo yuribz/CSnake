@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include "linkedlist.h"
+#include "queue.h"
 
 typedef struct Queue {
     LinkedList* queue;
