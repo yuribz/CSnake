@@ -2,8 +2,14 @@
 #define QUEUE_H
 
 #include <stdbool.h>
+#include "linkedlist.h"
 
-typedef struct Queue Queue;
+const int Q_DATASIZE = 4 * sizeof(short);
+
+typedef struct Queue {
+    LinkedList* queue;
+    int         size;
+} Queue;
 
 Queue* createQueue() ;
 bool enqueue(Queue* queue, short val1, short val2, short val3, short val4) ;

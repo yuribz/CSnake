@@ -6,6 +6,7 @@
         "linkedlist.h": "c",
         "sdl.h": "c",
         "stdbool.h": "c",
-        "queue.h": "c"
+        "queue.h": "c",
+        "string.h": "c"
     }
 }
