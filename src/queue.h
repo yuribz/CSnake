@@ -4,8 +4,6 @@
 #include <stdbool.h>
 #include "linkedlist.h"
 
-const int Q_DATASIZE = 4 * sizeof(short);
-
 typedef struct Queue {
     LinkedList* queue;
     int         size;

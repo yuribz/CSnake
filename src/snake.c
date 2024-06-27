@@ -7,6 +7,8 @@
 #define SCREEN_WIDTH 600
 #define SCREEN_HEIGHT 600
 
+const int Q_DATASIZE = 4 * sizeof(short);
+
 SDL_Window *win;
 SDL_Renderer *ren;
 
@@ -167,9 +169,8 @@ int main(int argc, char **arg)
         head.x += head.vx;
         head.y += head.vy;
 
-        SDL_Rect rect;
-
         
+        renderSnake(body, &head);
 
         SDL_RenderPresent(ren);
     }

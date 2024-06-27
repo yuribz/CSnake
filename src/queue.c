@@ -5,14 +5,10 @@
 #include "linkedlist.h"
 #include "queue.h"
 
-typedef struct Queue {
-    LinkedList* queue;
-    int         size;
-} Queue;
-
 Queue* createQueue() {
     Queue* queue = (Queue*) malloc(sizeof(Queue));
     queue->queue = createList();
+    return queue;
 }
 
 bool enqueue(Queue* queue, short val1, short val2, short val3, short val4) {
