@@ -143,12 +143,20 @@ int main(int argc, char **arg)
                             break;
                         case SDLK_LEFT:
                             head.vx = -1;
+                            head.vy = 0;
+                            break;
                         case SDLK_RIGHT:
                             head.vx = 1;
+                            head.vy = 0;
+                            break;
                         case SDLK_UP:
                             head.vy = -1;
+                            head.vx = 0;
+                            break;
                         case SDLK_DOWN:
                             head.vy = 1;
+                            head.vx = 0;
+                            break;
                         default:
                             break;
                     }
@@ -168,7 +176,6 @@ int main(int argc, char **arg)
 
         head.x += head.vx;
         head.y += head.vy;
-
         
         renderSnake(body, &head);
 
