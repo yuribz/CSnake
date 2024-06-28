@@ -1,13 +1,17 @@
 #include <SDL2/SDL.h>
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <time.h>
 #include "queue.h"
 
 #define SCREEN_WIDTH 600
 #define SCREEN_HEIGHT 600
-
-const int Q_DATASIZE = 4 * sizeof(short);
+#define Q_DATASIZE (4 * sizeof(short))
+#define FPS 5
+#define FRAME_DELAY (1000 / FPS)
+#define GRID_SIZE 25
 
 SDL_Window *win;
 SDL_Renderer *ren;
@@ -20,6 +24,10 @@ typedef struct SnakeHead {
 
 typedef Queue SnakeBody;
 
+typedef struct Apple {
+    short x, y, w, h;
+} Apple;
+
 int setup() {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
@@ -27,8 +35,8 @@ int setup() {
     }
 
     win = SDL_CreateWindow(
-        "title",
-        30, 30,
+        "CSnake",
+        50, 50,
         SCREEN_WIDTH, SCREEN_HEIGHT,
         SDL_WINDOW_SHOWN);
 
@@ -72,7 +80,7 @@ void drawRect(int x, int y, int w, int h) {
 
 void renderSnake(SnakeBody *b, SnakeHead *h){
     
-    SDL_SetRenderDrawColor(ren, 0, 0, 255, 255);
+    SDL_SetRenderDrawColor(ren, 255, 255, 255, 255);
     drawRect(h->x, h->y, h->w, h->h);
 
     // Go through all the segments in the snake's body.
@@ -84,6 +92,8 @@ void renderSnake(SnakeBody *b, SnakeHead *h){
         // Remove the first segment from the snake and store it.
         dequeue(b, data);
 
+        printf("%.3d %.3d %.3d %.3d\n", data[0], data[1], data[2], data[3]);
+
         drawRect(data[0], data[1], data[2], data[3]);
 
         // Enter the segment back from the end.
@@ -91,6 +101,19 @@ void renderSnake(SnakeBody *b, SnakeHead *h){
     }
     // Destroy the stored data
     free(data);
+}
+
+void renderApple(Apple* apple) {
+    SDL_SetRenderDrawColor(ren, 255, 0, 0, 255);
+
+    SDL_Rect rect;
+
+    rect.x = apple->x;
+    rect.y = apple->y;
+    rect.w = apple->w;
+    rect.h = apple->h;
+
+    SDL_RenderFillRect(ren, &rect);
 }
 
 int main(int argc, char **arg)
@@ -109,21 +132,31 @@ int main(int argc, char **arg)
 
     SnakeHead head;
     SnakeBody *body;
+    Apple apple;
 
     body = createQueue();
 
 
-    head.x = 50;
-    head.y = 50;
-    head.w = 50;
-    head.h = 50;
+    head.x = 25;
+    head.y = 25;
+    head.w = GRID_SIZE;
+    head.h = GRID_SIZE;
     head.vx = 0;
     head.vy = 0;
+
+    apple.x = 250;
+    apple.y = 250;
+    apple.w = GRID_SIZE;
+    apple.h = GRID_SIZE;
+
+    srand(time(NULL));
 
 
     // main loop
     while (running) {
         SDL_Event e;
+
+        int delta = SDL_GetTicks();
 
         // event handler
         while(SDL_PollEvent(&e)) {
@@ -142,19 +175,19 @@ int main(int argc, char **arg)
                             SDL_PushEvent(&quit_event);
                             break;
                         case SDLK_LEFT:
-                            head.vx = -1;
+                            head.vx = -GRID_SIZE;
                             head.vy = 0;
                             break;
                         case SDLK_RIGHT:
-                            head.vx = 1;
+                            head.vx = GRID_SIZE;
                             head.vy = 0;
                             break;
                         case SDLK_UP:
-                            head.vy = -1;
+                            head.vy = -GRID_SIZE;
                             head.vx = 0;
                             break;
                         case SDLK_DOWN:
-                            head.vy = 1;
+                            head.vy = GRID_SIZE;
                             head.vx = 0;
                             break;
                         default:
@@ -171,15 +204,38 @@ int main(int argc, char **arg)
         }
 
         // The fun part
-        SDL_SetRenderDrawColor(ren, 255, 255, 255, 255);
+        SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
         SDL_RenderClear(ren);
 
         head.x += head.vx;
         head.y += head.vy;
+
+        addSegment(body, head.x, head.y, head.w, head.h);
+        removeSegment(body);
         
+        
+        renderApple(&apple);
         renderSnake(body, &head);
 
+        if (apple.x == head.x && apple.y == head.y) {
+            apple.x = (short) rand() % (SCREEN_WIDTH + 1);
+            apple.y = (short) rand() % (SCREEN_HEIGHT + 1);
+
+            apple.x = (apple.x / GRID_SIZE) * GRID_SIZE;
+            apple.y = (apple.y / GRID_SIZE) * GRID_SIZE;
+
+            addSegment(body, head.x, head.y, head.w, head.h);
+        }
+
+        printf("Snake size: %d\n", body->size);
+
+        
         SDL_RenderPresent(ren);
+
+        delta = SDL_GetTicks() - delta;
+        if (FRAME_DELAY > delta) {
+            SDL_Delay(FRAME_DELAY - delta);
+        }
     }
 
     SDL_DestroyWindow(win);
