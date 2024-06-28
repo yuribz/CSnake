@@ -10,12 +10,6 @@ typedef struct Node {
     short       *data;
 } Node;
 
-typedef struct LinkedList {
-    Node *first;
-    Node *last;
-    int  size;
-} LinkedList;
-
 const int DATASIZE = 4 * sizeof(short);
 const int NODESIZE = sizeof(Node);
 const int LISTSIZE = sizeof(LinkedList); 

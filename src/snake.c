@@ -59,11 +59,13 @@ int setup() {
 
 void addSegment(SnakeBody *body, short val1, short val2, short val3, short val4) {
     enqueue(body, val1, val2, val3, val4);
+    // printf("Segment added! Size: %d\n", body->size);
 }
 
 short* removeSegment(SnakeBody *body) {
     short* data = malloc(sizeof(Q_DATASIZE));
     dequeue(body, data);
+    // printf("Segment removed! Size: %d\n", body->size);
     return data;
 }
 
@@ -92,12 +94,12 @@ void renderSnake(SnakeBody *b, SnakeHead *h){
         // Remove the first segment from the snake and store it.
         dequeue(b, data);
 
-        printf("%.3d %.3d %.3d %.3d\n", data[0], data[1], data[2], data[3]);
+        // printf("%.3d %.3d %.3d %.3d\n", data[0], data[1], data[2], data[3]);
 
         drawRect(data[0], data[1], data[2], data[3]);
 
         // Enter the segment back from the end.
-        enqueue(b, data[0], data[1], data[3], data[4]);
+        enqueue(b, data[0], data[1], data[2], data[3]);
     }
     // Destroy the stored data
     free(data);
@@ -210,12 +212,17 @@ int main(int argc, char **arg)
         head.x += head.vx;
         head.y += head.vy;
 
+        if (
+            head.x < 0 || head.x > SCREEN_WIDTH - GRID_SIZE ||
+            head.y < 0 || head.y > SCREEN_HEIGHT - GRID_SIZE
+            ) {
+                SDL_Event quit_event;
+                quit_event.type = SDL_QUIT;
+                SDL_PushEvent(&quit_event);
+            }
+        
+        
         addSegment(body, head.x, head.y, head.w, head.h);
-        removeSegment(body);
-        
-        
-        renderApple(&apple);
-        renderSnake(body, &head);
 
         if (apple.x == head.x && apple.y == head.y) {
             apple.x = (short) rand() % (SCREEN_WIDTH + 1);
@@ -224,10 +231,19 @@ int main(int argc, char **arg)
             apple.x = (apple.x / GRID_SIZE) * GRID_SIZE;
             apple.y = (apple.y / GRID_SIZE) * GRID_SIZE;
 
+            printf(
+                "Snake data: %.3d %.3d %.3d %.3d\n",
+                head.x, head.y, head.w, head.h
+            );
             addSegment(body, head.x, head.y, head.w, head.h);
         }
 
-        printf("Snake size: %d\n", body->size);
+        removeSegment(body);
+
+        renderApple(&apple);
+        renderSnake(body, &head);
+
+        // printf("Snake size: %d\n", body->size);
 
         
         SDL_RenderPresent(ren);

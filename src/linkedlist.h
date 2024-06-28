@@ -5,7 +5,11 @@
 
 typedef struct Node Node;
 
-typedef struct LinkedList LinkedList;
+typedef struct LinkedList {
+    Node *first;
+    Node *last;
+    int  size;
+} LinkedList;
 
 
 LinkedList* createList();
