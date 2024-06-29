@@ -224,6 +224,8 @@ int main(int argc, char **arg)
         
         addSegment(body, head.x, head.y, head.w, head.h);
 
+
+        // Check for apple/snake collision.
         if (apple.x == head.x && apple.y == head.y) {
             apple.x = (short) rand() % (SCREEN_WIDTH + 1);
             apple.y = (short) rand() % (SCREEN_HEIGHT + 1);
@@ -231,10 +233,6 @@ int main(int argc, char **arg)
             apple.x = (apple.x / GRID_SIZE) * GRID_SIZE;
             apple.y = (apple.y / GRID_SIZE) * GRID_SIZE;
 
-            printf(
-                "Snake data: %.3d %.3d %.3d %.3d\n",
-                head.x, head.y, head.w, head.h
-            );
             addSegment(body, head.x, head.y, head.w, head.h);
         }
 
