@@ -11,15 +11,18 @@ Queue* createQueue() {
     return queue;
 }
 
+int queueSize(Queue* queue) {
+    return queue->queue->size;
+}
+
 bool enqueue(Queue* queue, short val1, short val2, short val3, short val4) {
     return append(queue->queue, val1, val2, val3, val4);
-    queue->size = queue->queue->size;
 }
 
 bool dequeue(Queue* queue, short* data) {
     get(queue->queue, 0, data);
-    queue->size = queue->queue->size;
-    return delete(queue->queue, 0);
+    bool result = delete(queue->queue, 0);
+    return result;
 };
 
 bool peekFirst(Queue* queue, short* data) {

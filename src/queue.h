@@ -6,10 +6,10 @@
 
 typedef struct Queue {
     LinkedList* queue;
-    int         size;
 } Queue;
 
 Queue* createQueue() ;
+int queueSize(Queue* queue);
 bool enqueue(Queue* queue, short val1, short val2, short val3, short val4) ;
 bool dequeue(Queue* queue, short* data) ;
 bool peekFirst(Queue* queue, short* data) ;
