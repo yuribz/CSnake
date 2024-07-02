@@ -93,17 +93,17 @@ void renderSnake(SnakeBody *b, SnakeHead *h){
 
     int size = queueSize(b);
 
-    printf("The head segment is at %.3d %.3d\n", h->x, h->y);
+    // printf("The head segment is at %.3d %.3d\n", h->x, h->y);
 
-    printf("The size of the snake is currently at %d\n", size);
+    // printf("The size of the snake is currently at %d\n", size);
     
     for (int i = 0; i < size; i++) {
         // Remove the first segment from the snake and store it.
         
         dequeue(b, data);
 
-        if (i == 0) printf("The first segment is at %.3d %.3d\n", data[0], data[1]);
-        else if (i == size - 1) printf("The last segment is at %.3d %.3d\n", data[0], data[1]);
+        // if (i == 0) printf("The first segment is at %.3d %.3d\n", data[0], data[1]);
+        // else if (i == size - 1) printf("The last segment is at %.3d %.3d\n", data[0], data[1]);
 
         if (i > 3 && i != size - 1 && data[0] == h->x && data[1] == h->y) {
             SDL_Event quit_event;
